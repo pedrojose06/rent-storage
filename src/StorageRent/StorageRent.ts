@@ -2,9 +2,9 @@ const contract = {
   baseMonthlyRent: 100.0,
   leaseStartDate: new Date('2023-01-01T00:00:00'),
   windowStartDate: new Date('2023-01-01T00:00:00'),
-  windowEndDate: new Date('2023-03-31T00:00:00'),
+  windowEndDate: new Date('2023-06-31T00:00:00'),
   dayOfMonthRentDue: 1,
-  rentRateChangeFrequency: 1,
+  rentRateChangeFrequency: 3,
   rentChangeRate: 0.1,
 } as Contract
 
@@ -115,6 +115,7 @@ export function calculateMonthlyRent(contract: Contract): MonthlyRentRecords {
     baseMonthlyRent,
     leaseStartDate,
     rentChangeRate,
+    rentRateChangeFrequency,
   } = contract
 
   const firstMonthRent = verifyDayOfMonthRentDue(
@@ -144,20 +145,17 @@ export function calculateMonthlyRent(contract: Contract): MonthlyRentRecords {
     i++
   ) {
     const rentDueDate = correctRentDueDate(leaseStartDate, dayOfMonthRentDue)
-    rentDueDate.setMonth(windowStartDate.getMonth() + i)
+    rentDueDate.setMonth(i % rentChangeRate)
 
-    let rentAmount = roundToTwoDecimalPlaces(
-      calculateNewMonthlyRent(baseMonthlyRent, rentChangeRate)
-    )
-
-    if (i % rentChangeRate === 0) {
-      rentAmount = roundToTwoDecimalPlaces(
-        calculateNewMonthlyRent(
-          monthlyRentRecords[i - 1].rentAmount,
-          rentChangeRate
-        )
-      )
-    }
+    const rentAmount =
+      i % rentRateChangeFrequency === 0
+        ? roundToTwoDecimalPlaces(
+            calculateNewMonthlyRent(
+              monthlyRentRecords[i - 1].rentAmount,
+              rentChangeRate
+            )
+          )
+        : roundToTwoDecimalPlaces(monthlyRentRecords[i - 1].rentAmount)
 
     monthlyRentRecords.push({
       vacancy: false,
