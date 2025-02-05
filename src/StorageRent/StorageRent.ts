@@ -1,9 +1,9 @@
-const contracts = {
+const contract = {
   baseMonthlyRent: 100.0,
   leaseStartDate: new Date('2023-01-01T00:00:00'),
   windowStartDate: new Date('2023-01-01T00:00:00'),
   windowEndDate: new Date('2023-03-31T00:00:00'),
-  dayOfMonthRentDue: 15,
+  dayOfMonthRentDue: 1,
   rentRateChangeFrequency: 1,
   rentChangeRate: 0.1,
 } as Contract
@@ -143,11 +143,7 @@ export function calculateMonthlyRent(contract: Contract): MonthlyRentRecords {
     i <= calculateMonthDifference(windowEndDate, windowStartDate);
     i++
   ) {
-    const rentDueDate = correctRentDueDate(
-      leaseStartDate,
-      windowStartDate,
-      dayOfMonthRentDue
-    )
+    const rentDueDate = correctRentDueDate(leaseStartDate, dayOfMonthRentDue)
     rentDueDate.setMonth(windowStartDate.getMonth() + i)
 
     const rentAmount = Number.parseFloat(
@@ -189,3 +185,4 @@ function calculateNewMonthlyRent(
 function isLeapYear(year: number) {
   return year % 4 === 0 && year % 100 !== 0
 }
+console.log(calculateMonthlyRent(contract))
