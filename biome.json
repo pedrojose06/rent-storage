@@ -1,0 +1,98 @@
+{
+	"$schema": "https://biomejs.dev/schemas/1.8.0/schema.json",
+	"organizeImports": {
+	  "enabled": false
+	},
+	"vcs": {
+	  "defaultBranch": "master"
+	},
+	"linter": {
+	  "enabled": true,
+	  "rules": {
+		"recommended": true,
+		"a11y": {
+		  "useAltText": "warn",
+		  "useValidAnchor": "off",
+		  "noDistractingElements": "warn",
+		  "useAnchorContent": "warn",
+		  "useButtonType": "warn",
+		  "noRedundantRoles": "warn",
+		  "useKeyWithClickEvents": "off"
+		},
+		"suspicious": {
+		  "noExplicitAny": "off",
+		  "noArrayIndexKey": "warn",
+		  "noShadowRestrictedNames": "off",
+		  "noConfusingVoidType": "warn",
+		  "noConsoleLog": "error",
+		  "noDoubleEquals": "warn"
+		},
+		"complexity": {
+		  "noForEach": "off",
+		  "useOptionalChain": "warn",
+		  "noExtraBooleanCast": "warn",
+		  "useFlatMap": "warn",
+		  "useSimplifiedLogicExpression": "off",
+		  "noUselessCatch": "warn",
+		  "noUselessFragments": "warn",
+		  "noUselessRename": "warn",
+		  "noWith": "error",
+		  "noBannedTypes": "warn",
+		  "noVoid": "warn",
+		  "noExcessiveCognitiveComplexity": "off",
+		  "noUselessSwitchCase": "warn"
+		},
+		"nursery": {
+		  "useImportRestrictions": "off",
+		  "useSortedClasses": {
+			"fix": "safe",
+			"level": "warn",
+			"options": {}
+		  }
+		},
+		"performance": {
+		  "noDelete": "warn",
+		  "noAccumulatingSpread": "off"
+		},
+		"correctness": {
+		  "useExhaustiveDependencies": "off",
+		  "noUnusedVariables": "warn",
+		  "noChildrenProp": "off",
+		  "noSetterReturn": "off",
+		  "noUnusedImports": "warn"
+		},
+		"style": {
+		  "noUnusedTemplateLiteral": "warn",
+		  "noVar": "error",
+		  "noUselessElse": "warn",
+		  "noShoutyConstants": "off",
+		  "useEnumInitializers": "error",
+		  "useSingleVarDeclarator": "warn",
+		  "useTemplate": "warn",
+		  "noNonNullAssertion": "warn",
+		  "useImportType": "off"
+		},
+		"security": {
+		  "noDangerouslySetInnerHtml": "off"
+		}
+	  }
+	},
+	"javascript": {
+	  "formatter": {
+		"quoteStyle": "single",
+		"semicolons": "asNeeded",
+		"trailingCommas": "es5",
+		"indentStyle": "space",
+		"indentWidth": 2,
+		"bracketSpacing": true
+	  }
+	},
+	"json": {
+	  "formatter": {
+		"enabled": true,
+		"indentWidth": 2,
+		"indentStyle": "space"
+	  }
+	}
+  }
+  
