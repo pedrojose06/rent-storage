@@ -146,9 +146,18 @@ export function calculateMonthlyRent(contract: Contract): MonthlyRentRecords {
     const rentDueDate = correctRentDueDate(leaseStartDate, dayOfMonthRentDue)
     rentDueDate.setMonth(windowStartDate.getMonth() + i)
 
-    const rentAmount = Number.parseFloat(
-      (baseMonthlyRent * (1 + rentChangeRate) ** i).toFixed(2)
+    let rentAmount = roundToTwoDecimalPlaces(
+      calculateNewMonthlyRent(baseMonthlyRent, rentChangeRate)
     )
+
+    if (i % rentChangeRate === 0) {
+      rentAmount = roundToTwoDecimalPlaces(
+        calculateNewMonthlyRent(
+          monthlyRentRecords[i - 1].rentAmount,
+          rentChangeRate
+        )
+      )
+    }
 
     monthlyRentRecords.push({
       vacancy: false,
