@@ -1,5 +1,3 @@
-import { RENT_CHANGE_FREQUENCY } from '../../test/StorageRent/mocks/StorageRent.mock'
-
 export type MonthlyRentRecord = {
   vacancy: boolean
   rentAmount: number
@@ -35,7 +33,6 @@ export function calculateMonthlyRent(contract: Contract): MonthlyRentRecords {
   const {
     dayOfMonthRentDue,
     windowEndDate,
-    windowStartDate,
     baseMonthlyRent,
     leaseStartDate,
     rentChangeRate,
@@ -44,8 +41,9 @@ export function calculateMonthlyRent(contract: Contract): MonthlyRentRecords {
 
   const firstMonthRent = calculateFirstMonthRent(
     dayOfMonthRentDue,
-    windowStartDate,
-    baseMonthlyRent
+    leaseStartDate,
+    baseMonthlyRent,
+    rentChangeRate
   )
   const monthlyRentRecords = [] as MonthlyRentRecords
 
@@ -78,7 +76,7 @@ export function calculateMonthlyRent(contract: Contract): MonthlyRentRecords {
         : roundToTwoDecimalPlaces(monthlyRentRecords[month].rentAmount)
 
     monthlyRentRecords.push({
-      vacancy: false,
+      vacancy: isVacant(rentChangeRate),
       rentAmount: rentAmount,
       rentDueDate: rentDueDate,
     })
@@ -153,6 +151,10 @@ function calculateMonthDifference(windowEndDate, windowStartDate): number {
   )
 }
 
+function isVacant(rentChangeRate: number) {
+  return rentChangeRate < 0
+}
+
 /**
  * Calculate the First Month Rent based on the day of the month rent is due
  *
@@ -165,12 +167,13 @@ function calculateMonthDifference(windowEndDate, windowStartDate): number {
 function calculateFirstMonthRent(
   dayOfMonthRentDue: number,
   leaseStartDate: Date,
-  baseMonthlyRent: number
+  baseMonthlyRent: number,
+  rentChangeRate: number
 ) {
   if (dayOfMonthRentDue === leaseStartDate.getDate()) {
     return [
       {
-        vacancy: false,
+        vacancy: isVacant(rentChangeRate),
         rentAmount: baseMonthlyRent,
         rentDueDate: correctRentDueDate(
           leaseStartDate.getFullYear(),
@@ -194,7 +197,7 @@ function calculateFirstMonthRent(
   if (isLeaseStartDateAfterDueDate)
     return [
       {
-        vacancy: false,
+        vacancy: isVacant(rentChangeRate),
         rentAmount: calcRent,
         rentDueDate: correctRentDueDate(
           leaseStartDate.getFullYear(),
@@ -206,12 +209,12 @@ function calculateFirstMonthRent(
 
   return [
     {
-      vacancy: false,
+      vacancy: isVacant(rentChangeRate),
       rentAmount: calcRent,
       rentDueDate: leaseStartDate,
     },
     {
-      vacancy: false,
+      vacancy: isVacant(rentChangeRate),
       rentAmount: baseMonthlyRent,
       rentDueDate: correctRentDueDate(
         leaseStartDate.getFullYear(),
@@ -259,6 +262,3 @@ function correctRentDueDate(
 
   return dueDate
 }
-
-// console.log(calculateMonthlyRent(contract1))
-console.log(calculateMonthlyRent(RENT_CHANGE_FREQUENCY))

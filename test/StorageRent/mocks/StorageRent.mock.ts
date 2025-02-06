@@ -146,3 +146,46 @@ export const EXPECT_RENT_CHANGE_FREQUENCY: MonthlyRentRecord[] = [
     rentDueDate: new Date('2023-06-01T00:00:00'),
   },
 ]
+
+export const RENT_DECREASE_WHEN_VACANCY: Contract = {
+  baseMonthlyRent: 100.0,
+  leaseStartDate: new Date('2023-01-01T00:00:00'),
+  windowStartDate: new Date('2023-01-01T00:00:00'),
+  windowEndDate: new Date('2023-10-31T00:00:00'),
+  dayOfMonthRentDue: 1,
+  rentRateChangeFrequency: 1,
+  rentChangeRate: -0.1,
+}
+
+export const EXPECT_RENT_DECREASE_WHEN_VACANCY: MonthlyRentRecord[] = [
+  {
+    vacancy: true,
+    rentAmount: 100,
+    rentDueDate: new Date('2023-01-01T00:00:00'),
+  },
+  {
+    vacancy: true,
+    rentAmount: 90,
+    rentDueDate: new Date('2023-02-01T00:00:00'),
+  },
+  {
+    vacancy: true,
+    rentAmount: 81,
+    rentDueDate: new Date('2023-03-01T00:00:00'),
+  },
+  {
+    vacancy: true,
+    rentAmount: 72.9,
+    rentDueDate: new Date('2023-04-01T00:00:00'),
+  },
+  {
+    vacancy: true,
+    rentAmount: 65.61,
+    rentDueDate: new Date('2023-05-01T00:00:00'),
+  },
+  {
+    vacancy: true,
+    rentAmount: 59.05,
+    rentDueDate: new Date('2023-06-01T00:00:00'),
+  },
+]

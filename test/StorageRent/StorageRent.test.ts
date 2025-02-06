@@ -8,6 +8,8 @@ import {
   EXPECT_DUE_DATE_IN_FEBRUARY,
   RENT_CHANGE_FREQUENCY,
   EXPECT_RENT_CHANGE_FREQUENCY,
+  RENT_DECREASE_WHEN_VACANCY,
+  EXPECT_RENT_DECREASE_WHEN_VACANCY,
 } from './mocks/StorageRent.mock'
 
 describe('calculateMonthlyRent function', () => {
@@ -33,5 +35,11 @@ describe('calculateMonthlyRent function', () => {
     const result = calculateMonthlyRent(RENT_CHANGE_FREQUENCY)
 
     expect(result).toEqual(EXPECT_RENT_CHANGE_FREQUENCY)
+  })
+
+  it('should return MonthlyRentRecords validate if rent decreaase when rent rate is < 0 (vacacy: true)', () => {
+    const result = calculateMonthlyRent(RENT_DECREASE_WHEN_VACANCY)
+
+    expect(result).toEqual(EXPECT_RENT_DECREASE_WHEN_VACANCY)
   })
 })
