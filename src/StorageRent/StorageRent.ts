@@ -79,19 +79,7 @@ export function calculateMonthlyRent(contract: Contract): MonthlyRentRecords {
     );
     month++
   ) {
-    console.log(
-      monthlyRentRecords[monthlyRentRecords.length - 1].rentDueDate.getMonth()
-    )
-    // const rentDueDate = new Date(2024, 1, 28)
-    // const rentDueDate = new Date(
-    //   leaseStartDate.getFullYear(),
-    //   monthlyRentRecords[monthlyRentRecords.length - 1].rentDueDate.getMonth() +
-    //     1,
-    //   dayOfMonthRentDue
-    // )
-
     const rentDueDate = correctRentDueDate(
-      leaseStartDate.getDate(),
       leaseStartDate.getFullYear(),
       monthlyRentRecords[monthlyRentRecords.length - 1].rentDueDate.getMonth() +
         1,
@@ -204,7 +192,6 @@ function calculateFirstMonthRent(
         vacancy: false,
         rentAmount: baseMonthlyRent,
         rentDueDate: correctRentDueDate(
-          leaseStartDate.getDate(),
           leaseStartDate.getFullYear(),
           leaseStartDate.getMonth(),
           dayOfMonthRentDue
@@ -229,7 +216,6 @@ function calculateFirstMonthRent(
         vacancy: false,
         rentAmount: calcRent,
         rentDueDate: correctRentDueDate(
-          leaseStartDate.getDate(),
           leaseStartDate.getFullYear(),
           leaseStartDate.getMonth(),
           dayOfMonthRentDue
@@ -247,7 +233,6 @@ function calculateFirstMonthRent(
       vacancy: false,
       rentAmount: baseMonthlyRent,
       rentDueDate: correctRentDueDate(
-        leaseStartDate.getDate(),
         leaseStartDate.getFullYear(),
         leaseStartDate.getMonth(),
         dayOfMonthRentDue
@@ -277,7 +262,6 @@ function getDaysInMonth(year: number, month: number): number {
  *
  */
 function correctRentDueDate(
-  day: number,
   year: number,
   month: number,
   dayOfMonthRentDue: number
