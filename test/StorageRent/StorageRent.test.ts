@@ -31,13 +31,13 @@ describe('calculateMonthlyRent function', () => {
     expect(result).toEqual(EXPECT_DUE_DATE_IN_FEBRUARY)
   })
 
-  it('should return MonthlyRentRecords validate if put correct the last day in due rent ', () => {
+  it('should return MonthlyRentRecords validate if rent change after achieve the rate frequency', () => {
     const result = calculateMonthlyRent(RENT_CHANGE_FREQUENCY)
 
     expect(result).toEqual(EXPECT_RENT_CHANGE_FREQUENCY)
   })
 
-  it('should return MonthlyRentRecords validate if rent decreaase when rent rate is < 0 (vacacy: true)', () => {
+  it('should return MonthlyRentRecords validate if rent decreaase when rent rate is < 0 and vacancy should be true', () => {
     const result = calculateMonthlyRent(RENT_DECREASE_WHEN_VACANCY)
 
     expect(result).toEqual(EXPECT_RENT_DECREASE_WHEN_VACANCY)
