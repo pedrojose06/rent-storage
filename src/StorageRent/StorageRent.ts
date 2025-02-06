@@ -1,22 +1,4 @@
-const contract1 = {
-  baseMonthlyRent: 100.0,
-  leaseStartDate: new Date('2023-01-01T00:00:00'),
-  windowStartDate: new Date('2023-01-01T00:00:00'),
-  windowEndDate: new Date('2023-03-31T00:00:00'),
-  dayOfMonthRentDue: 1,
-  rentRateChangeFrequency: 1,
-  rentChangeRate: 0.1,
-} as Contract
-
-const contract2 = {
-  baseMonthlyRent: 100.0,
-  leaseStartDate: new Date('2023-01-02T00:00:00'),
-  windowStartDate: new Date('2023-01-02T00:00:00'),
-  windowEndDate: new Date('2023-04-31T00:00:00'),
-  dayOfMonthRentDue: 31,
-  rentRateChangeFrequency: 1,
-  rentChangeRate: 0.1,
-} as Contract
+import { RENT_CHANGE_FREQUENCY } from '../../test/StorageRent/mocks/StorageRent.mock'
 
 export type MonthlyRentRecord = {
   vacancy: boolean
@@ -68,7 +50,6 @@ export function calculateMonthlyRent(contract: Contract): MonthlyRentRecords {
   const monthlyRentRecords = [] as MonthlyRentRecords
 
   firstMonthRent && monthlyRentRecords.push(...firstMonthRent)
-
   for (
     let month =
       monthlyRentRecords[monthlyRentRecords.length - 1].rentDueDate.getMonth();
@@ -280,4 +261,4 @@ function correctRentDueDate(
 }
 
 // console.log(calculateMonthlyRent(contract1))
-console.log(calculateMonthlyRent(contract2))
+console.log(calculateMonthlyRent(RENT_CHANGE_FREQUENCY))
