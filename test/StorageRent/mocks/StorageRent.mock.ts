@@ -1,5 +1,3 @@
-// filepath: /Users/esapiens/Documents/pedro/projetos/rent-storage/test/StorageRent/StorageRent.mock.ts
-
 import {
   Contract,
   MonthlyRentRecord,
