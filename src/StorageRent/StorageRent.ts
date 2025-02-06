@@ -49,94 +49,6 @@ export type Contract = {
  * @returns Array<MonthlyRentRecord>;
  */
 
-function roundToTwoDecimalPlaces(value: number): number {
-  return Math.round(value * 100) / 100
-}
-
-function calculateMonthDifference(windowEndDate, windowStartDate): number {
-  if (windowStartDate.getFullYear() > windowEndDate.getFullYear()) return -1
-
-  if (windowStartDate.getFullYear() === windowEndDate.getFullYear()) {
-    return windowEndDate.getMonth() - windowStartDate.getMonth()
-  }
-
-  const countMonthsInYear =
-    (windowEndDate.getFullYear() - windowStartDate.getFullYear() - 1) * 12
-
-  if (windowStartDate.getMonth() > windowEndDate.getMonth()) {
-    return (
-      windowStartDate.getMonth() - windowEndDate.getMonth() + countMonthsInYear
-    )
-  }
-
-  return (
-    windowEndDate.getMonth() - windowStartDate.getMonth() + countMonthsInYear
-  )
-}
-
-function calculateFirstMonthRent(
-  dayOfMonthRentDue: number,
-  leaseStartDate: Date,
-  baseMonthlyRent: number
-) {
-  if (dayOfMonthRentDue === leaseStartDate.getDate()) {
-    return [
-      {
-        vacancy: false,
-        rentAmount: baseMonthlyRent,
-        rentDueDate: leaseStartDate,
-      },
-    ] as MonthlyRentRecords
-  }
-  const isLeaseStartDateLastDayOfMonth = Number(
-    dayOfMonthRentDue < leaseStartDate.getDate()
-  )
-
-  const calcRent = roundToTwoDecimalPlaces(
-    baseMonthlyRent *
-      (isLeaseStartDateLastDayOfMonth -
-        (dayOfMonthRentDue - leaseStartDate.getDate()) / 30) *
-      (isLeaseStartDateLastDayOfMonth ? 1 : -1)
-  )
-
-  if (isLeaseStartDateLastDayOfMonth)
-    return [
-      {
-        vacancy: false,
-        rentAmount: calcRent,
-        rentDueDate: leaseStartDate,
-      },
-    ] as MonthlyRentRecords
-
-  return [
-    {
-      vacancy: false,
-      rentAmount: calcRent,
-      rentDueDate: leaseStartDate,
-    },
-    {
-      vacancy: false,
-      rentAmount: baseMonthlyRent,
-      rentDueDate: new Date(
-        leaseStartDate.getFullYear(),
-        leaseStartDate.getMonth(),
-        dayOfMonthRentDue
-      ),
-    },
-  ] as MonthlyRentRecords
-}
-
-function correctRentDueDate(
-  leaseStartDate: Date,
-  dayOfMonthRentDue: number
-): Date {
-  return new Date(
-    leaseStartDate.getFullYear(),
-    leaseStartDate.getMonth() + 1,
-    dayOfMonthRentDue
-  )
-}
-
 export function calculateMonthlyRent(contract: Contract): MonthlyRentRecords {
   const {
     dayOfMonthRentDue,
@@ -218,5 +130,126 @@ function calculateNewMonthlyRent(
 function isLeapYear(year: number) {
   return year % 4 === 0 && year % 100 !== 0
 }
+
+/**
+ * Rounds a number to two decimal places
+ *
+ * @param value : the number to be rounded
+ * @returns number
+ *
+ */
+function roundToTwoDecimalPlaces(value: number): number {
+  return Math.round(value * 100) / 100
+}
+
+/**
+ * Calculate the difference in months between two dates
+ *
+ * @param windowStartDate : The first date of the given time window
+ * @param windowEndDate : The last date of the given time window
+ * @returns number
+ *
+ */
+function calculateMonthDifference(windowEndDate, windowStartDate): number {
+  if (windowStartDate.getFullYear() > windowEndDate.getFullYear()) return -1
+
+  if (windowStartDate.getFullYear() === windowEndDate.getFullYear()) {
+    return windowEndDate.getMonth() - windowStartDate.getMonth()
+  }
+
+  const countMonthsInYear =
+    (windowEndDate.getFullYear() - windowStartDate.getFullYear() - 1) * 12
+
+  if (windowStartDate.getMonth() > windowEndDate.getMonth()) {
+    return (
+      windowStartDate.getMonth() - windowEndDate.getMonth() + countMonthsInYear
+    )
+  }
+
+  return (
+    windowEndDate.getMonth() - windowStartDate.getMonth() + countMonthsInYear
+  )
+}
+
+/**
+ * Calculate the First Month Rent based on the day of the month rent is due
+ *
+ * @param dayOfMonthRentDue : The day of each month on which rent is due
+ * @param leaseStartDate : The date that the tenant's lease starts
+ * @param baseMonthlyRent : The base or starting monthly rent for unit
+ * @returns Array<MonthlyRentRecord>;
+ *
+ */
+function calculateFirstMonthRent(
+  dayOfMonthRentDue: number,
+  leaseStartDate: Date,
+  baseMonthlyRent: number
+) {
+  if (dayOfMonthRentDue === leaseStartDate.getDate()) {
+    return [
+      {
+        vacancy: false,
+        rentAmount: baseMonthlyRent,
+        rentDueDate: leaseStartDate,
+      },
+    ] as MonthlyRentRecords
+  }
+  const isLeaseStartDateLastDayOfMonth = Number(
+    dayOfMonthRentDue < leaseStartDate.getDate()
+  )
+
+  const calcRent = roundToTwoDecimalPlaces(
+    baseMonthlyRent *
+      (isLeaseStartDateLastDayOfMonth -
+        (dayOfMonthRentDue - leaseStartDate.getDate()) / 30) *
+      (isLeaseStartDateLastDayOfMonth ? 1 : -1)
+  )
+
+  if (isLeaseStartDateLastDayOfMonth)
+    return [
+      {
+        vacancy: false,
+        rentAmount: calcRent,
+        rentDueDate: leaseStartDate,
+      },
+    ] as MonthlyRentRecords
+
+  return [
+    {
+      vacancy: false,
+      rentAmount: calcRent,
+      rentDueDate: leaseStartDate,
+    },
+    {
+      vacancy: false,
+      rentAmount: baseMonthlyRent,
+      rentDueDate: new Date(
+        leaseStartDate.getFullYear(),
+        leaseStartDate.getMonth(),
+        dayOfMonthRentDue
+      ),
+    },
+  ] as MonthlyRentRecords
+}
+
+/**
+ * Correct the Rent Due Date based on the day of the month rent is due
+ *
+ * @param dayOfMonthRentDue : The day of each month on which rent is due
+ * @param leaseStartDate : The date that the tenant's lease starts
+ * @returns Date
+ *
+ */
+function correctRentDueDate(
+  leaseStartDate: Date,
+  dayOfMonthRentDue: number
+): Date {
+  return new Date(
+    leaseStartDate.getFullYear(),
+    leaseStartDate.getMonth() + 1,
+    dayOfMonthRentDue
+  )
+}
+
 // console.log(calculateMonthlyRent(contract1))
 console.log(calculateMonthlyRent(contract2))
